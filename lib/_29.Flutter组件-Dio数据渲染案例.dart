@@ -151,9 +151,9 @@ class DioUtil {
 
   //GET 请求
   Future<Response<dynamic>> get(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-  }) {
+      String path, {
+        Map<String, dynamic>? queryParameters,
+      }) {
     return _dio.get(path, queryParameters: queryParameters);
   }
 }
