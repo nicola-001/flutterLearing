@@ -44,12 +44,67 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: Text("频道管理"),
+      home: Scaffold(
+        appBar: AppBar(title: Text("频道管理")),
+        body: GridView.extent(
+          padding: EdgeInsets.all(10),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          maxCrossAxisExtent: 140,
+          childAspectRatio: 3,
+          children: List.generate(_list.length, (index) {
+            return ChannelItem(
+              item: _list[index],
+              //在父组件中获取子组件的点击事件
+              onDelete: (int index) {
+                print("点击了删除按钮");
+                //删除
+                _list.removeAt(index);
+                setState(() {});
+              },
+            );
+          }),
+        ),
       ),
-      body: Text("内容"),
-    ));
+    );
+  }
+}
+
+//创建无状态组件
+class ChannelItem extends StatelessWidget {
+  // 声明接收的属性
+  final Map<String, dynamic> item;
+
+  // 1.声明子传父的函数
+  final Function(int index) onDelete;
+
+  // 2.在构造函数中赋值
+  const ChannelItem({super.key, required this.item, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    //
+    return Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Container(
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.blue,
+            child: Text(item["name"], style: TextStyle(color: Colors.white)),
+          ),
+        ),
+        //3.调用函数
+        IconButton(
+          onPressed: () {
+            print("点击了！");
+            onDelete(item["id"]);
+          },
+          color: Colors.red,
+          icon: Icon(Icons.delete, size: 15),
+        ),
+      ],
+    );
   }
 }
 
